@@ -6,11 +6,11 @@
         <form class="flex flex-col items-center gap-2 flex-1 mt-10" id="f_register">
             <div class="flex flex-col w-full">
                 <label class="pl-1">Email</label>
-                <input x-model="reg_email" class="rounded p-1" type="text" />
+                <input x-model="reg_email" class="rounded p-1" placeholder="Email..." name="reg_email" />
             </div>
             <div class="flex flex-col w-full relative">
                 <label class="pl-1">Password</label>
-                <input x-model="reg_password" class="rounded p-1" :type="showPasswordAsPlainText ? 'text' : 'password'" />
+                <input x-model="reg_password" class="rounded p-1" :type="showPasswordAsPlainText ? 'text' : 'password'" placeholder="Password..." name="reg_password" />
                 <svg x-show="!showPasswordAsPlainText" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 absolute right-[6px] bottom-[30px] cursor-pointer" viewBox="0 0 20 20" fill="currentColor" @click="showPasswordAsPlainText = !showPasswordAsPlainText">
                     <path fill-rule="evenodd" d="M3.707 2.293a1 1 0 00-1.414 1.414l14 14a1 1 0 001.414-1.414l-1.473-1.473A10.014 10.014 0 0019.542 10C18.268 5.943 14.478 3 10 3a9.958 9.958 0 00-4.512 1.074l-1.78-1.781zm4.261 4.26l1.514 1.515a2.003 2.003 0 012.45 2.45l1.514 1.514a4 4 0 00-5.478-5.478z" clip-rule="evenodd" />
                     <path d="M12.454 16.697L9.75 13.992a4 4 0 01-3.742-3.741L2.335 6.578A9.98 9.98 0 00.458 10c1.274 4.057 5.065 7 9.542 7 .847 0 1.669-.105 2.454-.303z" />
@@ -28,12 +28,15 @@
             </div>
             <div class="flex flex-col w-full pl-1">
                 <label>Confirm Password</label>
-                <input x-model="reg_confirm_password" name="password_confirmation" class="rounded p-1" :type="showPasswordAsPlainText ? 'text' : 'password'" />
+                <input x-model="reg_confirm_password" name="reg_password_confirmation" class="rounded p-1" :type="showPasswordAsPlainText ? 'text' : 'password'" placeholder="Confirm your password..." />
             </div>
-            <small x-cloak x-show="showRegisterFormError" class="mt-4" x-text="registerError">Lorem ipsum dolor sit amet consectetur adipisicing elit. Hic, fuga.</small>
+            <small class="text-red-500 text-sm md:text-base text-center">
+                <span x-cloak x-show="passwordFailed">Please make sure that your passwords match, it contains a digit and is at least 8 characters long.</span>
+                <span x-cloak x-show="emailFailed">Please make sure you are using a valid email. If you have registered with us before <a class="app-link">click here</a> to reset your password</span>
+            </small>
             <div class="mt-auto">
-                <button type="button" class="app-btn app-btn-secondary" @click="$store.globalStates.modalShowing = false; showRegisterModal = false" x-ref="closeRegisterModalBtn">Close</button>
-                <button type="submit" class="app-btn app-btn-primary" :disabled="!validRegisterForm">Confirm</button>
+                <button type="button" class="app-btn app-btn-secondary" @click="$store.globalStates.modalShowing = false; showRegisterModal = false; passwordFailed = false; emailFailed = false" x-ref="closeRegisterModalBtn">Close</button>
+                <button class="app-btn app-btn-primary" :disabled="!validRegisterForm" @click.prevent="confirmBtnPressed">Confirm</button>
             </div>
         </form>
     </div>

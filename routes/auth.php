@@ -9,3 +9,5 @@ Route::post('login', [AuthenticateController::class, 'attemptLogin'])->name('log
 
 Route::post('/logout', [AuthenticateController::class, 'attemptLogout'])->name('logout_post_url');
 
+Route::post('/register', [AuthenticateController::class, 'attemptRegister'])->name('register_post_url');
+

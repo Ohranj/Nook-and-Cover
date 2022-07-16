@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 
 class AuthenticateController extends Controller
 {
@@ -45,6 +46,26 @@ class AuthenticateController extends Controller
         $request->session()->invalidate();
         $request->session()->regenerateToken();
         return redirect('/');
+    }
+
+    /**
+     * Attempts the registration of a user.
+     * @param Illuminate/Http/Request $request
+     * @return string json
+     */
+    public function attemptRegister(Request $request) {
+        $validation = Validator::make($request->only('reg_email', 'reg_password', 'reg_password_confirmation'), [
+            'reg_email' => ['bail', 'required', 'email:rfc,dns', 'string', 'unique:App\Models\User,email'],
+            'reg_password' => ['bail', 'required', 'confirmed', 'alpha_num', 'regex:/\\d/', 'string', 'min:8'],
+            'reg_password_confirmation' => ['bail', 'required', 'alpha_num', 'regex:/\\d/', 'string', 'min:8']
+        ]);
+
+        if ($validation->fails()) {
+            $reason = $validation->failed();
+            return response()->json(['success' => false, 'errors' => $reason], 422);
+        }
+
+        return response()->json(['success' => true, 'data' => $request->all(), 201]);
     }
 
     public function index() {

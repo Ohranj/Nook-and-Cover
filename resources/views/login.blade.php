@@ -1,5 +1,5 @@
 <x-layouts.guest>
-    <div x-data="register" class="h-screen flex flex-col">
+    <div x-data="register({'registerPostURL': '{{route('register_post_url')}}'})" class="h-screen flex flex-col">
         <nav class="border-b h-[75px] px-4">
             <ul class="flex justify-end items-center h-full gap-4">
                 <li>
@@ -56,19 +56,22 @@
         <x-register/>
     </div>
     <script>
-        const register = () => ({
+        const register = ({registerPostURL}) => ({
             showRegisterModal: false,
             showRegisterFormError: false,
-            registerFormErrors: ['Please make sure that your passwords match.', 'A user with that email already exists.'],
+            passwordFailed: false,
+            emailFailed: false,
             registerError: '',
             reg_email: '',
             reg_password: '',
             reg_confirm_password: '',
             showPasswordAsPlainText: false,
-            validRegisterForm: false,
+            validRegisterForm: true,
             formElem: null,
+            csrfToken: null,
             init() {
-                this.formElem = document.getElementById('f_register')
+                this.formElem = document.getElementById('f_register');
+                this.csrfToken = document.querySelector('meta[name="csrf-token"]')['content'];
                 this.applyModalWatch();
                 this.applyPasswordsWatch();
             },
@@ -86,13 +89,50 @@
                         if (!isMatchBool) throw Error;
                         const fieldsHaveValues = this.reg_password || this.reg_confirm_password;
                         if (!fieldsHaveValues) throw Error;
+                        if (this.reg_password.length < 8) throw Error;
+                        if (!/\d/g.test(this.reg_password)) throw Error;
                     } catch {
                         this.validRegisterForm = false;
                         return;
                     }
-                    //Check number and at least 8 chars
                     this.validRegisterForm = true;
                 })
+            },
+            async confirmBtnPressed() {
+                this.passwordFailed = false;
+                this.emailFailed = false;
+                const formData = new FormData(this.formElem);
+                const response = await fetch(registerPostURL, {
+                    method: 'post',
+                    body: formData,
+                    headers: {
+                        'X-CSRF-TOKEN': this.csrfToken,
+                        "X-Requested-With": "XMLHttpRequest",
+                    }
+                })
+                console.log(response);
+                const json = await response.json();
+                console.log(json)
+                try {
+                    if (response.status == 422) throw Error(422);
+                } catch (err) {
+                    switch (err.message) {
+                        case '422':
+                            const {errors} = json;
+                            if (errors['reg_email']) {
+                                this.emailFailed = true;
+                                return;
+                            };
+                            if (errors['reg_password'] || errors['reg_password_confirmation']) {
+                                this.passwordFailed = true;
+                                return;
+                            };
+                        break;
+                        default:
+                        break;
+                    }
+                    return;
+                }
             }
         })
     </script>
