@@ -56,7 +56,7 @@ chown -R www-data:www-data .
 ## About the project
 Nook and Cover allows users to review books in a more sequential manner. Rather than reviewing on completing the book, users are promoted to review the book on a chapter by chapter basis. Allowing them to see how their opinion changes. The site facilitates interaction with others and allows both the discovery and discussion in how the opinion of others evolves in comparison to yours. Finally, Nook and Cover serves as a place to upload a snapshot of your reading corner on an interactive map. 
 
-## TECH
+## Tech
  - Laravel
  - Tailwind css
  - Alpine JS
