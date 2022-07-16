@@ -1,0 +1,28 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+    body {
+        @apply font-Roboto;
+    }
+    [x-cloak] {
+        @apply hidden !important;
+    }
+
+    .app-btn {
+        @apply w-[125px] border-2 rounded;
+    }
+
+    .app-btn-primary {
+        @apply border-indigo-500 bg-indigo-500 text-white hover:bg-indigo-700 hover:border-indigo-700 transform hover:scale-[1.01];
+    }
+
+    .app-btn-secondary {
+        @apply border-indigo-500 hover:bg-slate-200 transform hover:scale-[1.01];
+    }
+
+    .app-link {
+        @apply underline hover:text-slate-200 cursor-pointer;
+    }
+}

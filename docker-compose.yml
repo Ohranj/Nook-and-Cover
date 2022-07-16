@@ -1,0 +1,105 @@
+#Left side of port value is the local port needed to access the docker container. e.g for mysql if 3306 was already locally, use 4306:3306 on the docker container
+
+#revert nginx ports 8080 back to 80
+#revert mysql ports 4306 back to 3306
+#Rever nginx default file to listen on port 80
+#Remove api route from api.php
+#Attach to ngage360 login controller
+# $res = Http::post('http://172.17.0.1:8080/api/test', [
+#                 'user_id' => Auth::user()['id'],
+#                 'name' => Auth::user()['name'],
+#                 'surname' => Auth::user()['surname'],
+#                 'created' => now(),
+#                 'browser' => $request->header('user-agent'),
+#                 'ip' => $request->ip()
+#             ]);
+#             dd($res);
+
+version: "3.8"
+
+networks:
+  analytics:
+    name: analytics
+
+services:
+  nginx:
+    build:
+      context: .
+      dockerfile: nginx.dockerfile
+    container_name: nginx_analytics
+    depends_on:
+      - php
+      - mysql
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - ./:/var/www/html
+    networks:
+      - analytics
+
+  php:
+    build:
+      context: .
+      dockerfile: php.dockerfile
+    container_name: php_analytics
+    volumes:
+      - ./:/var/www/html
+    networks:
+      - analytics
+
+  mysql:
+    image: mysql:5.7.32
+    container_name: mysql_analytics
+    ports:
+      - 3306:3306
+    volumes:
+      - ./mysql:/var/lib/mysql
+    networks:
+      - analytics
+    environment:
+      MYSQL_DATABASE: book_review
+      MYSQL_USER: alex
+      MYSQL_PASSWORD: Orange18
+      MYSQL_ROOT_PASSWORD: Orange18
+    
+  composer:
+    image: composer:latest
+    container_name: composer_analytics
+    volumes:
+      - ./:/var/www/html
+    working_dir: /var/www/html
+    networks:
+      - analytics
+    
+  artisan:
+    build:
+      context: .
+      dockerfile: php.dockerfile
+    container_name: artisan_analytics
+    volumes:
+      - ./:/var/www/html
+    working_dir: /var/www/html
+    entrypoint: ['php', 'artisan']
+    networks:
+      - analytics
+
+  npm:
+    image: node:current-alpine
+    container_name: npm_analytics
+    volumes:
+      - ./:/var/www/html
+    working_dir: /var/www/html
+    entrypoint: ['npm']
+    networks:
+      - analytics
+
+  npx:
+    image: node:current-alpine
+    container_name: npx_analytics
+    volumes:
+      - ./:/var/www/html
+    working_dir: /var/www/html
+    entrypoint: ['npx']
+    networks:
+      - analytics
