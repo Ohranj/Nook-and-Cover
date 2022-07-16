@@ -16,7 +16,7 @@ DB_PASSWORD=[Password from docker-compose.yml - mysql service]
 
 ** In addition, create an empty mysql folder in the root of your project. This is used to persist the data as you bring the image up and down. **
 
-To build and run the project. From this you can visit localhost in your browser
+To build and run the project. From this you can visit localhost in your browser.
 ```
 sudo docker compose up -d --build
 ```
@@ -27,19 +27,24 @@ sudo docker compose exec php /bin/sh
 sudo docker compose exec mysql /bin/sh
 ```
 
-Artisan, composer and npm commands can be run as such
+Artisan, composer and npm commands can be run as such:
 ```
 sudo docker compose run --rm composer [command]  
 sudo docker compose run --rm artisan [command]  
 sudo docker compose run --rm npm [command]   
 ```
 
-For Browsersync, you may use the below, opening up the returned external url;
+You can install the relevant npm dependencies with:
+```
+sudo docker compose run --rm npm i
+```
+
+For Browsersync, you may use the below, opening up the returned external url.
 ```
 sudo docker compose run --rm npm run watch
 ```
 
-To bring down the image
+To bring down the image:
 ```
 sudo docker compose down
 ```
@@ -55,6 +60,8 @@ chown -R www-data:www-data .
 
 ## About the project
 Nook and Cover allows users to review books in a more sequential manner. Rather than reviewing on completing the book, users are promoted to review the book on a chapter by chapter basis. Allowing them to see how their opinion changes. The site facilitates interaction with others and allows both the discovery and discussion in how the opinion of others evolves in comparison to yours. Finally, Nook and Cover serves as a place to upload a snapshot of your reading corner on an interactive map. 
+
+
 
 ## Tech
  - Laravel
