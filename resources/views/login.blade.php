@@ -59,8 +59,41 @@
         const register = () => ({
             showRegisterModal: false,
             showRegisterFormError: false,
-            registerFormErrors: ['Your passwords do not match.', 'A user with that email already exists.'],
+            registerFormErrors: ['Please make sure that your passwords match.', 'A user with that email already exists.'],
             registerError: '',
+            reg_email: '',
+            reg_password: '',
+            reg_confirm_password: '',
+            showPasswordAsPlainText: false,
+            validRegisterForm: false,
+            formElem: null,
+            init() {
+                this.formElem = document.getElementById('f_register')
+                this.applyModalWatch();
+                this.applyPasswordsWatch();
+            },
+            applyModalWatch() {
+                this.$watch('showRegisterModal', (isShowing) => {
+                    if (isShowing) return;
+                    this.formElem.reset();
+                    this.showPasswordAsPlainText = false;
+                });
+            },
+            applyPasswordsWatch() {
+                this.$watch('reg_password, reg_confirm_password', () => {
+                    try {
+                        const isMatchBool = this.reg_password === this.reg_confirm_password;
+                        if (!isMatchBool) throw Error;
+                        const fieldsHaveValues = this.reg_password || this.reg_confirm_password;
+                        if (!fieldsHaveValues) throw Error;
+                    } catch {
+                        this.validRegisterForm = false;
+                        return;
+                    }
+                    //Check number and at least 8 chars
+                    this.validRegisterForm = true;
+                })
+            }
         })
     </script>
 </x-layouts.guest>
