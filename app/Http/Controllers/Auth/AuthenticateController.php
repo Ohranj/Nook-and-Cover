@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
 class AuthenticateController extends Controller
@@ -54,7 +56,8 @@ class AuthenticateController extends Controller
      * @return string json
      */
     public function attemptRegister(Request $request) {
-        $validation = Validator::make($request->only('reg_email', 'reg_password', 'reg_password_confirmation'), [
+        $registerData = $request->only('reg_email', 'reg_password', 'reg_password_confirmation');
+        $validation = Validator::make($registerData, [
             'reg_email' => ['bail', 'required', 'email:rfc,dns', 'string', 'unique:App\Models\User,email'],
             'reg_password' => ['bail', 'required', 'confirmed', 'alpha_num', 'regex:/\\d/', 'string', 'min:8'],
             'reg_password_confirmation' => ['bail', 'required', 'alpha_num', 'regex:/\\d/', 'string', 'min:8']
@@ -65,7 +68,16 @@ class AuthenticateController extends Controller
             return response()->json(['success' => false, 'errors' => $reason], 422);
         }
 
-        return response()->json(['success' => true, 'data' => $request->all(), 201]);
+        $userData = $validation->safe()->only(['reg_email', 'reg_password']);
+
+        User::create([
+            'email' => $userData['reg_email'],
+            'password' => Hash::make($userData['reg_password']),
+        ]);
+        //Apply throttle;
+        //Send email;
+
+        return response()->json(['success' => true, 'message' => 'Account created', 201]);
     }
 
     public function index() {

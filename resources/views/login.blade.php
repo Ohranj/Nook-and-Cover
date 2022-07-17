@@ -53,7 +53,7 @@
                 </p>
             </div>
         </div>
-        <x-register/>
+        <x-modals.register/>
     </div>
     <script>
         const register = ({registerPostURL}) => ({
@@ -66,7 +66,7 @@
             reg_password: '',
             reg_confirm_password: '',
             showPasswordAsPlainText: false,
-            validRegisterForm: true,
+            validRegisterForm: false,
             formElem: null,
             csrfToken: null,
             init() {
