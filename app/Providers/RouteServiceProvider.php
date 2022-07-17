@@ -2,8 +2,10 @@
 
 namespace App\Providers;
 
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 
@@ -59,6 +61,19 @@ class RouteServiceProvider extends ServiceProvider
                     ->with('throttled', $secondsUntilReset);
             } 
             RateLimiter::hit($key, $decay);
+        });
+
+        RateLimiter::for('XML_submit', function () {
+            $key = 'XML_submit'.Auth::id();
+            $max = 5;
+            $decay = 120;
+            $hasExceededAttempts = RateLimiter::tooManyAttempts($key, $max);
+            if ($hasExceededAttempts) {
+                $secondsUntilReset = RateLimiter::availableIn($key);
+                return response()->json(['success' => false, 'message' => 'Throttled', 'remaining' => $secondsUntilReset], 429);
+            } else {
+                RateLimiter::hit($key, $decay);
+            }
         });
     }
 }

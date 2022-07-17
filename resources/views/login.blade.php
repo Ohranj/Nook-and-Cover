@@ -61,6 +61,9 @@
             showRegisterFormError: false,
             passwordFailed: false,
             emailFailed: false,
+            isThrottled: false,
+            showGenericError: false,
+            throttleTimeRemaining: null,
             registerError: '',
             reg_email: '',
             reg_password: '',
@@ -99,22 +102,11 @@
                 })
             },
             async confirmBtnPressed() {
-                this.passwordFailed = false;
-                this.emailFailed = false;
-                const formData = new FormData(this.formElem);
-                const response = await fetch(registerPostURL, {
-                    method: 'post',
-                    body: formData,
-                    headers: {
-                        'X-CSRF-TOKEN': this.csrfToken,
-                        "X-Requested-With": "XMLHttpRequest",
-                    }
-                })
-                console.log(response);
+                this.resetFormState();
+                const response = await this.postRegisterRequest()
                 const json = await response.json();
-                console.log(json)
                 try {
-                    if (response.status == 422) throw Error(422);
+                    if (response.status != 201) throw Error(response.status);
                 } catch (err) {
                     switch (err.message) {
                         case '422':
@@ -128,11 +120,35 @@
                                 return;
                             };
                         break;
+                        case '429':
+                            const {remaining} = json;
+                            this.throttleTimeRemaining = remaining
+                            this.isThrottled = true;
+                        break;
                         default:
+                            this.showGenericError = true;
                         break;
                     }
                     return;
                 }
+                //Handle on success
+            },
+            async postRegisterRequest() {
+                const formData = new FormData(this.formElem);
+                return await fetch(registerPostURL, {
+                    method: 'post',
+                    body: formData,
+                    headers: {
+                        'X-CSRF-TOKEN': this.csrfToken,
+                        "X-Requested-With": "XMLHttpRequest",
+                    }
+                })
+            },
+            resetFormState() {
+                this.passwordFailed = false;
+                this.emailFailed = false;
+                this.isThrottled = false;
+                this.showGenericError = false;
             }
         })
     </script>

@@ -74,7 +74,7 @@ class AuthenticateController extends Controller
             'email' => $userData['reg_email'],
             'password' => Hash::make($userData['reg_password']),
         ]);
-        //Apply throttle;
+
         //Send email;
 
         return response()->json(['success' => true, 'message' => 'Account created', 201]);

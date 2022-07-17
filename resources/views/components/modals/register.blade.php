@@ -33,9 +33,11 @@
             <small class="text-red-500 text-sm md:text-base text-center">
                 <span x-cloak x-show="passwordFailed">Please make sure that your passwords match, it contains a digit and is at least 8 characters long.</span>
                 <span x-cloak x-show="emailFailed">Please make sure you are using a valid email. If you have registered with us before <a class="app-link">click here</a> to reset your password</span>
+                <span x-cloak x-show="isThrottled">You are doing that too much. Please try again in <span x-text="throttleTimeRemaining"></span> seconds.</span>
+                <span x-cloak x-show="showGenericError">We are having trouble fulfilling your request at the minute. Please try back shortly</span>
             </small>
             <div class="mt-auto">
-                <button type="button" class="app-btn app-btn-secondary" @click="$store.globalStates.modalShowing = false; showRegisterModal = false; passwordFailed = false; emailFailed = false" x-ref="closeRegisterModalBtn">Close</button>
+                <button type="button" class="app-btn app-btn-secondary" @click="$store.globalStates.modalShowing = false; showRegisterModal = false; resetFormState()" x-ref="closeRegisterModalBtn">Close</button>
                 <button class="app-btn app-btn-primary" :disabled="!validRegisterForm" @click.prevent="confirmBtnPressed">Confirm</button>
             </div>
         </form>
