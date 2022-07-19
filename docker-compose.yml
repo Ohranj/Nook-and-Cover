@@ -58,10 +58,10 @@ services:
     networks:
       - analytics
     environment:
-      MYSQL_DATABASE: book_review
-      MYSQL_USER: alex
-      MYSQL_PASSWORD: Orange18
-      MYSQL_ROOT_PASSWORD: Orange18
+      MYSQL_DATABASE: $DB_DATABASE
+      MYSQL_USER: $DB_USERNAME
+      MYSQL_PASSWORD: $DB_PASSWORD
+      MYSQL_ROOT_PASSWORD: $DB_PASSWORD
     
   composer:
     image: composer:latest
