@@ -2,10 +2,10 @@
 ```
 DB_CONNECTION=mysql
 DB_HOST=[service name from docker-compose.yml]
-DB_PORT=[Port value from docker-compose.yml - mysql service]
-DB_DATABASE=[Database referenced in docker-compose.yml - mysql service]
-DB_USERNAME=[User referenced in docker-compose.yml - mysql service]
-DB_PASSWORD=[Password referenced in docker-compose.yml - mysql service]
+DB_PORT=[Port value taken from docker-compose.yml - mysql service]
+DB_DATABASE=[Database name . Referenced in docker-compose.yml - mysql service]
+DB_USERNAME=[User. Referenced in docker-compose.yml - mysql service]
+DB_PASSWORD=[Password. Referenced in docker-compose.yml - mysql service]
 ```
 
 
@@ -13,6 +13,8 @@ DB_PASSWORD=[Password referenced in docker-compose.yml - mysql service]
 ## Docker
 
 ** Make sure that you have docker installed on your machine **
+
+** That the Database credentials are created in your .env **
 
 ** In addition, create an empty mysql folder in the root of your project. This is used to persist the data as you bring the image up and down. **
 
