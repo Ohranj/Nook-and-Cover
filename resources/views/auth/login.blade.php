@@ -107,10 +107,12 @@
                 const json = await response.json();
                 try {
                     if (response.status != 201) throw Error(response.status);
+                    console.log(json)
+                    //Handle on success
                 } catch (err) {
                     switch (err.message) {
                         case '422':
-                            const {errors} = json;
+                            const { errors } = json;
                             if (errors['reg_email']) {
                                 this.emailFailed = true;
                                 return;
@@ -121,7 +123,7 @@
                             };
                         break;
                         case '429':
-                            const {remaining} = json;
+                            const { remaining } = json;
                             this.throttleTimeRemaining = remaining
                             this.isThrottled = true;
                         break;
@@ -129,9 +131,7 @@
                             this.showGenericError = true;
                         break;
                     }
-                    return;
                 }
-                //Handle on success
             },
             async postRegisterRequest() {
                 const formData = new FormData(this.formElem);

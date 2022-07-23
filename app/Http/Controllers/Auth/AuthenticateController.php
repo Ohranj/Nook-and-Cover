@@ -2,18 +2,21 @@
 
 namespace App\Http\Controllers\Auth;
 
+use Carbon\Carbon;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Auth\Events\Registered;
 use Illuminate\Support\Facades\Validator;
 
 class AuthenticateController extends Controller
 {
 
     /**
-     * Attempt to login the user. Receives a request object with the users credentials
+     * Attempt to login the user.
      * @param Illuminate\Http\Request $request
      * @return redirect
      */
@@ -39,7 +42,7 @@ class AuthenticateController extends Controller
     }
 
     /**
-     * Attempt to logout the user. Receives a request object
+     * Attempt to logout the user.
      * @param Illuminate\Http\Request $request
      * @return redirect
      */
@@ -52,6 +55,8 @@ class AuthenticateController extends Controller
 
     /**
      * Attempts the registration of a user.
+     * On success the user is logged in.
+     * Fires the email verification email event on registration success.
      * @param Illuminate/Http/Request $request
      * @return string json
      */
@@ -65,22 +70,27 @@ class AuthenticateController extends Controller
 
         if ($validation->fails()) {
             $reason = $validation->failed();
+            $now = Carbon::now();
+            $reasonArrAsString = json_encode($reason);
+            Log::info("{$now} - Registration failed -:- {$reasonArrAsString}");
             return response()->json(['success' => false, 'errors' => $reason], 422);
         }
 
         $userData = $validation->safe()->only(['reg_email', 'reg_password']);
 
-        User::create([
+        $user = User::create([
             'email' => $userData['reg_email'],
             'password' => Hash::make($userData['reg_password']),
         ]);
 
-        //Send email;
+        Auth::login($user, false);
 
-        return response()->json(['success' => true, 'message' => 'Account created', 201]);
+        event(new Registered($user));
+
+        return response()->json(['success' => true, 'message' => 'Account created'], 201);
     }
 
     public function index() {
-        return view('login');
+        return view('auth.login');
     }
 }

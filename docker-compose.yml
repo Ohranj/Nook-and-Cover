@@ -1,20 +1,3 @@
-#Left side of port value is the local port needed to access the docker container. e.g for mysql if 3306 was already locally, use 4306:3306 on the docker container
-
-#revert nginx ports 8080 back to 80
-#revert mysql ports 4306 back to 3306
-#Rever nginx default file to listen on port 80
-#Remove api route from api.php
-#Attach to ngage360 login controller
-# $res = Http::post('http://172.17.0.1:8080/api/test', [
-#                 'user_id' => Auth::user()['id'],
-#                 'name' => Auth::user()['name'],
-#                 'surname' => Auth::user()['surname'],
-#                 'created' => now(),
-#                 'browser' => $request->header('user-agent'),
-#                 'ip' => $request->ip()
-#             ]);
-#             dd($res);
-
 version: "3.8"
 
 networks:
