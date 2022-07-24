@@ -20,5 +20,5 @@ Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $requ
 })->middleware(['auth', 'signed'])->name('verification.verify');
 
 
-//Change url from coming in as nginx
-//FInd out why $request->fulfill not filling in datetime - confirm not because not in $fillable array on user model
+//Handle success message - text that an email has been sent and must be verified to access the logged in pages
+//Change url from coming in as nginx when in browserSync mode

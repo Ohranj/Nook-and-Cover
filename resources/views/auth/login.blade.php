@@ -72,6 +72,7 @@
             validRegisterForm: false,
             formElem: null,
             csrfToken: null,
+            registerIsSuccess: false,
             init() {
                 this.formElem = document.getElementById('f_register');
                 this.csrfToken = document.querySelector('meta[name="csrf-token"]')['content'];
@@ -107,8 +108,7 @@
                 const json = await response.json();
                 try {
                     if (response.status != 201) throw Error(response.status);
-                    console.log(json)
-                    //Handle on success
+                    this.registerIsSuccess = true;
                 } catch (err) {
                     switch (err.message) {
                         case '422':
@@ -149,6 +149,7 @@
                 this.emailFailed = false;
                 this.isThrottled = false;
                 this.showGenericError = false;
+                this.registerIsSuccess = false;
             }
         })
     </script>

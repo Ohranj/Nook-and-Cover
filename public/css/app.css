@@ -466,6 +466,8 @@ video {
   margin-left: 0.25rem;
 }.mt-10 {
   margin-top: 2.5rem;
+}.mt-4 {
+  margin-top: 1rem;
 }.inline-block {
   display: inline-block;
 }.flex {
@@ -488,6 +490,14 @@ video {
   height: 5rem;
 }.h-4 {
   height: 1rem;
+}.h-8 {
+  height: 2rem;
+}.h-12 {
+  height: 3rem;
+}.h-\[325px\] {
+  height: 325px;
+}.h-\[350px\] {
+  height: 350px;
 }.min-h-screen {
   min-height: 100vh;
 }.w-\[125px\] {
@@ -504,6 +514,10 @@ video {
   width: 5rem;
 }.w-4 {
   width: 1rem;
+}.w-8 {
+  width: 2rem;
+}.w-12 {
+  width: 3rem;
 }.flex-1 {
   flex: 1 1 0%;
 }.-translate-y-1\/2 {
@@ -512,6 +526,27 @@ video {
 }.-translate-x-1\/2 {
   --tw-translate-x: -50%;
   transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+}@-webkit-keyframes bounce {0%, 100% {
+    transform: translateY(-25%);
+    -webkit-animation-timing-function: cubic-bezier(0.8,0,1,1);
+            animation-timing-function: cubic-bezier(0.8,0,1,1);
+  }50% {
+    transform: none;
+    -webkit-animation-timing-function: cubic-bezier(0,0,0.2,1);
+            animation-timing-function: cubic-bezier(0,0,0.2,1);
+  }
+}@keyframes bounce {0%, 100% {
+    transform: translateY(-25%);
+    -webkit-animation-timing-function: cubic-bezier(0.8,0,1,1);
+            animation-timing-function: cubic-bezier(0.8,0,1,1);
+  }50% {
+    transform: none;
+    -webkit-animation-timing-function: cubic-bezier(0,0,0.2,1);
+            animation-timing-function: cubic-bezier(0,0,0.2,1);
+  }
+}.animate-bounce {
+  -webkit-animation: bounce 1s infinite;
+          animation: bounce 1s infinite;
 }.cursor-pointer {
   cursor: pointer;
 }.flex-col {
@@ -583,6 +618,17 @@ video {
 }.text-5xl {
   font-size: 3rem;
   line-height: 1;
+}.text-2xl {
+  font-size: 1.5rem;
+  line-height: 2rem;
+}.text-3xl {
+  font-size: 1.875rem;
+  line-height: 2.25rem;
+}.text-4xl {
+  font-size: 2.25rem;
+  line-height: 2.5rem;
+}.font-bold {
+  font-weight: 700;
 }.text-white {
   --tw-text-opacity: 1;
   color: rgb(255 255 255 / var(--tw-text-opacity));
@@ -592,6 +638,9 @@ video {
 }.text-red-500 {
   --tw-text-opacity: 1;
   color: rgb(239 68 68 / var(--tw-text-opacity));
+}.text-indigo-500 {
+  --tw-text-opacity: 1;
+  color: rgb(99 102 241 / var(--tw-text-opacity));
 }.shadow-xl {
   --tw-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
   --tw-shadow-colored: 0 20px 25px -5px var(--tw-shadow-color), 0 8px 10px -6px var(--tw-shadow-color);
