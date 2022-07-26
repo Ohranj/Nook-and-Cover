@@ -20,5 +20,9 @@ Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $requ
 })->middleware(['auth', 'signed'])->name('verification.verify');
 
 
-//Handle success message - text that an email has been sent and must be verified to access the logged in pages
 //Change url from coming in as nginx when in browserSync mode
+//Add contact us form
+//Style email not verified page
+//Create a send verification again button
+//Add a forgot password feature
+//Add glass appreance on logged in pages

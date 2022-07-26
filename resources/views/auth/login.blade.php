@@ -3,10 +3,10 @@
         <nav class="border-b h-[75px] px-4">
             <ul class="flex justify-end items-center h-full gap-4">
                 <li>
-                    <button class="app-btn app-btn-primary" :disabled="showRegisterModal" @click="$store.globalStates.modalShowing = true; showRegisterModal = true">Register</button>
+                    <button class="app-btn app-btn-primary" :disabled="showRegisterModal || showContactUsModal" @click="$store.globalStates.modalShowing = true; showRegisterModal = true">Register</button>
                 </li>
                 <li>
-                    <button class="app-btn app-btn-primary" :disabled="showRegisterModal">Contact Us</button>
+                    <button class="app-btn app-btn-primary" :disabled="showRegisterModal || showContactUsModal" @click="$store.globalStates.modalShowing = true; showContactUsModal = true" >Contact Us</button>
                 </li>
             </ul>
         </nav>
@@ -54,10 +54,12 @@
             </div>
         </div>
         <x-modals.register/>
+        <x-modals.contact_us/>
     </div>
     <script>
         const register = ({registerPostURL}) => ({
             showRegisterModal: false,
+            showContactUsModal: false,
             showRegisterFormError: false,
             passwordFailed: false,
             emailFailed: false,
