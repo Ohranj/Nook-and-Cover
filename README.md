@@ -3,7 +3,7 @@
 DB_CONNECTION=mysql
 DB_HOST=[service name from docker-compose.yml]
 DB_PORT=[Port value taken from docker-compose.yml - mysql service]
-DB_DATABASE=[Database name . Referenced in docker-compose.yml - mysql service]
+DB_DATABASE=[Database name. Referenced in docker-compose.yml - mysql service]
 DB_USERNAME=[User. Referenced in docker-compose.yml - mysql service]
 DB_PASSWORD=[Password. Referenced in docker-compose.yml - mysql service]
 ```

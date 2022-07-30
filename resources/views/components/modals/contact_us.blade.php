@@ -13,11 +13,9 @@
                     <input class="form-control rounded p-1" name="contact_lastname" required />
                 </div>
             </div>
-            <div class="flex justify-center gap-2">
-                <div class="form-group mb-3 flex flex-col flex-1">
-                    <label for="contact_email" class="pl-1">Email</label>
-                    <input class="form-control rounded p-1" name="contact_email" required autofocus />
-                </div>
+            <div class="form-group mb-3 flex flex-col flex-1">
+                <label for="contact_email" class="pl-1">Email</label>
+                <input class="form-control rounded p-1" name="contact_email" required autofocus />
             </div>
             <div class="form-group mb-3 flex flex-col">
                 <label for="contact_query" class="pl-1">Your query</label>

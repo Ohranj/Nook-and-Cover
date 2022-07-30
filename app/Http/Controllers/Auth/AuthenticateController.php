@@ -95,7 +95,7 @@ class AuthenticateController extends Controller
      * Emails myself
      * Emails user if they checked to do so
      * @param Illuminate/Http/Request $request
-     * @return Illuminate/Http/JsonResponse 
+     * @return Illuminate/Http/RedirectResponse
      */
     public function contactUs(Request $request) {
         $requestData = $request->only('contact_firstname', 'contact_lastname', 'contact_query', 'contact_email');
@@ -120,13 +120,14 @@ class AuthenticateController extends Controller
             return redirect('/')->with('errors', $errors);
         }
 
-        //Add to database
-        //Email me
-        //Email user if so
+        //Add to database - Create table
+        //Email me - set to event / listener - see AA
+        //Email user if so - set to event / listener
 
-
-
-        return redirect('/')->with(['contact-success' => 'Query received', 'contact-copy' => $sendUserCopy]);
+        return redirect('/')->with([
+            'contact-success' => 'Query received',
+            'contact-copy' => $sendUserCopy
+        ]);
     }
 
     public function index() {
