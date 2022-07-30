@@ -19,6 +19,8 @@ Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $requ
     return redirect('/');
 })->middleware(['auth', 'signed'])->name('verification.verify');
 
+Route::post('/contact', [AuthenticateController::class, 'contactUs'])->name('contact_us_post_url');
+
 
 //Change url from coming in as nginx when in browserSync mode
 //Add contact us form

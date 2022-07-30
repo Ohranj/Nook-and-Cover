@@ -58,7 +58,7 @@ class AuthenticateController extends Controller
      * On success the user is logged in.
      * Fires the email verification email event on registration success.
      * @param Illuminate/Http/Request $request
-     * @return string json
+     * @return Illuminate/Http/JsonResponse 
      */
     public function attemptRegister(Request $request) {
         $registerData = $request->only('reg_email', 'reg_password', 'reg_password_confirmation');
@@ -88,6 +88,45 @@ class AuthenticateController extends Controller
         event(new Registered($user));
 
         return response()->json(['success' => true, 'message' => 'Account created'], 201);
+    }
+
+    /**
+     * Handle a contact us form request
+     * Emails myself
+     * Emails user if they checked to do so
+     * @param Illuminate/Http/Request $request
+     * @return Illuminate/Http/JsonResponse 
+     */
+    public function contactUs(Request $request) {
+        $requestData = $request->only('contact_firstname', 'contact_lastname', 'contact_query', 'contact_email');
+
+        $sendUserCopy = false;
+
+        if ($request->has('contact_confirm')) {
+            $sendUserCopy = true;
+            $requestData = [...$requestData, $request->contact_confirm];
+        }
+      
+        $validation = Validator::make($requestData, [
+            'contact_firstname' => ['required', 'string'],
+            'contact_lastname' => ['required', 'string'],
+            'contact_email' => ['required', 'email:rfc,dns'],
+            'contact_query' => ['required', 'string'],
+            'contact_confirm' => ['sometimes', 'accepted']
+        ]);
+
+        if ($validation->fails()) {
+            $errors = $validation->errors();
+            return redirect('/')->with('errors', $errors);
+        }
+
+        //Add to database
+        //Email me
+        //Email user if so
+
+
+
+        return redirect('/')->with(['contact-success' => 'Query received', 'contact-copy' => $sendUserCopy]);
     }
 
     public function index() {

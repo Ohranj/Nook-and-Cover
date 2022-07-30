@@ -17,6 +17,27 @@
                     <p class="text-center">Alternatively, you can <a class="app-link">click here</a> to reset your password, or <a @click="$store.globalStates.modalShowing = true; showRegisterModal = true" class="app-link">click here</a> to register an account.</p>
                 </div>
             @endif
+            @if ($errors->any())
+                <div class="border-2 w-full sm:w-3/4 mx-auto mb-8 bg-indigo-500 rounded p-1 text-white text-sm md:text-base text-center">
+                    <p class="mb-1">We've ran into a few issues when submitting your query and so your request has not been sent. Take a look at the errors we found and make the necessary amendments.</p>
+                    <ul>
+                        @foreach($errors->all() as $error)
+                            <li class="text-sm">{{$error}}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+            @if (session('contact-success'))
+                <div x-data="{show:true}" class="border-2 w-full sm:w-3/4 mx-auto mb-8 bg-green-500 rounded p-1 text-white text-sm md:text-base text-center" x-show="show" x-transition.duration.750>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 cursor-pointer float-right" viewBox="0 0 20 20" fill="currentColor" @click="show = false">
+                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
+                    </svg>
+                    <p>Thank you! Your message has been received.</p>
+                    @if (session('contact-copy'))
+                        <p class="mt-1">A copy of your submission has also been emailed to yourself.</p>
+                    @endif
+                </div>
+            @endif
             <h1 class="font-Lobster text-5xl sm:text-6xl mb-2 text-slate-700">Nook and Cover</h1>
             <div class="border-2 border-slate-500 rounded w-full h-[300px] sm:w-[500px] p-2 flex justify-center items-end relative shadow-xl shadow-slate-400">
                 <form method="POST" action="{{ route('login_post_url') }}" class="w-full px-2 mt-auto mb-12 z-10">
