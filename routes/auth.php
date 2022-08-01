@@ -23,7 +23,7 @@ Route::post('/contact', [AuthenticateController::class, 'contactUs'])->name('con
 
 
 //Change url from coming in as nginx when in browserSync mode
-//Add contact us form
+//See AuthController list items
 //Style email not verified page
 //Create a send verification again button
 //Add a forgot password feature

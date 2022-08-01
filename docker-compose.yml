@@ -1,15 +1,15 @@
 version: "3.8"
 
 networks:
-  analytics:
-    name: analytics
+  book-review:
+    name: book-review
 
 services:
   nginx:
     build:
       context: .
       dockerfile: nginx.dockerfile
-    container_name: nginx_analytics
+    container_name: nginx_book-review
     depends_on:
       - php
       - mysql
@@ -19,27 +19,27 @@ services:
     volumes:
       - ./:/var/www/html
     networks:
-      - analytics
+      - book-review
 
   php:
     build:
       context: .
       dockerfile: php.dockerfile
-    container_name: php_analytics
+    container_name: php_book-review
     volumes:
       - ./:/var/www/html
     networks:
-      - analytics
+      - book-review
 
   mysql:
     image: mysql:5.7.32
-    container_name: mysql_analytics
+    container_name: mysql_book-review
     ports:
       - 3306:3306
     volumes:
       - ./mysql:/var/lib/mysql
     networks:
-      - analytics
+      - book-review
     environment:
       MYSQL_DATABASE: $DB_DATABASE
       MYSQL_USER: $DB_USERNAME
@@ -48,41 +48,41 @@ services:
     
   composer:
     image: composer:latest
-    container_name: composer_analytics
+    container_name: composer_book-review
     volumes:
       - ./:/var/www/html
     working_dir: /var/www/html
     networks:
-      - analytics
+      - book-review
     
   artisan:
     build:
       context: .
       dockerfile: php.dockerfile
-    container_name: artisan_analytics
+    container_name: artisan_book-review
     volumes:
       - ./:/var/www/html
     working_dir: /var/www/html
     entrypoint: ['php', 'artisan']
     networks:
-      - analytics
+      - book-review
 
   npm:
     image: node:current-alpine
-    container_name: npm_analytics
+    container_name: npm_book-review
     volumes:
       - ./:/var/www/html
     working_dir: /var/www/html
     entrypoint: ['npm']
     networks:
-      - analytics
+      - book-review
 
   npx:
     image: node:current-alpine
-    container_name: npx_analytics
+    container_name: npx_book-review
     volumes:
       - ./:/var/www/html
     working_dir: /var/www/html
     entrypoint: ['npx']
     networks:
-      - analytics
+      - book-review

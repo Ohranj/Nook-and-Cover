@@ -7,6 +7,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
+use App\Models\ContactUs;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Auth\Events\Registered;
@@ -120,7 +121,10 @@ class AuthenticateController extends Controller
             return redirect('/')->with('errors', $errors);
         }
 
-        //Add to database - Create table
+        (new ContactUs())
+            ->populateEntry($requestData, $sendUserCopy)
+            ->save();
+
         //Email me - set to event / listener - see AA
         //Email user if so - set to event / listener
 
